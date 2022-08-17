@@ -1,7 +1,7 @@
 // ITERATION 1
 
 function updateSubtotal(product) {
-  console.log('Calculating subtotal, yey!');
+  // console.log('Calculating subtotal, yey!');
   const price = product.querySelector('.price span')
   const quantity = product.querySelector('.quantity input')
   const priceProd = price.innerText
@@ -18,7 +18,7 @@ function calculateAll() {
   // updateSubtotal(singleProduct);
   // end of test
 
-  // ITERATION 2
+  // ITERATION 2 and 3
   const subtotals = document.getElementsByClassName('product')
   let sumTotal = 0
   for (let i = 0; i < subtotals.length; i++) {
@@ -26,18 +26,25 @@ function calculateAll() {
     sumTotal += updateSubtotal(subtotals[i])
   }
    return document.querySelector('#total-value span').innerText = sumTotal
-
-  // ITERATION 3
-  
 }
 
 // ITERATION 4
 
-function removeProduct(event) {
+function removeProduct(event) { // ERRO! Está sumindo o botão e não o produto inteiro
   const target = event.currentTarget;
+  target.parentNode.removeChild(target)
   console.log('The target in remove is:', target);
-  //... your code goes here
 }
+window.addEventListener('load', () => {
+  const removeBtn = document.getElementsByClassName('btn-remove');
+  // let total = document.querySelector('#total-value span').innerText
+  for (let i = 0; i < removeBtn.length; i++) {
+    removeBtn[i].addEventListener('click', removeProduct);
+    // total =- removeBtn[i].querySelector('.subtotal span').innerText
+  } // Deduzir o subtotal removido do valor total
+})
+
+  
 
 // ITERATION 5
 
