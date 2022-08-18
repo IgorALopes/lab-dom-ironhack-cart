@@ -30,31 +30,68 @@ function calculateAll() {
 
 // ITERATION 4
 
-function removeProduct(event) { // ERRO! Está sumindo o botão e não o produto inteiro
+function removeProduct(event) {
   const target = event.currentTarget;
-  target.parentNode.removeChild(target)
-  console.log('The target in remove is:', target);
-}
-window.addEventListener('load', () => {
-  const removeBtn = document.getElementsByClassName('btn-remove');
-  // let total = document.querySelector('#total-value span').innerText
-  for (let i = 0; i < removeBtn.length; i++) {
-    removeBtn[i].addEventListener('click', removeProduct);
-    // total =- removeBtn[i].querySelector('.subtotal span').innerText
-  } // Deduzir o subtotal removido do valor total
-})
+  console.log('The target in remove is:', target)
+  // const row = target.parentNode.parentNode
+  // const parent = row.parentNode
+  // parent.removeChild(row)
+  target.parentNode.parentNode.parentNode.removeChild(target.parentNode.parentNode)
 
-  
+  calculateAll()
+}
+ 
 
 // ITERATION 5
 
-function createProduct() {
-  //... your code goes here
+function createProduct(event) {
+  const createRow = document.querySelector('.create-product');
+  let newProdNameInput = createRow.querySelector('input');
+  let newProdNameValue = newProdNameInput.value;
+  let newProdPriceInput = createRow.querySelector("input[type='number']");
+  let newProdPriceValue = Number(newProdPriceInput.valueAsNumber).toFixed(2);
+
+  const newTableRow = document.createElement('tr');
+  newTableRow.className = 'product';
+  newTableRow.innerHTML = `
+    <td class="name">
+      <span>${newProdNameValue}</span>
+    </td>
+    <td class="price">$<span>${newProdPriceValue}</span></td>
+    <td class="quantity">
+      <input type="number" value="0" min="0" placeholder="Quantity" />
+    </td>
+    <td class="subtotal">$<span>0</span></td>
+    <td class="action">
+      <button class="btn btn-remove">Remove</>
+    </td>
+  `;
+
+  // get the parent of this newly created row
+  const parent = document.querySelector('#cart tbody');
+
+  // append the newly created row to the parent
+  parent.appendChild(newTableRow);
+
+  // make sure remove button inherits the same behavior as other remove buttons
+  const removeBtn = newTableRow.querySelector('.btn-remove');
+  removeBtn.addEventListener('click', removeProduct);
+
+  // clean the fields
+  newProdNameInput.value = '';
+  newProdPriceInput.value = 0;
 }
+
 
 window.addEventListener('load', () => {
   const calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
 
-  //... your code goes here
+  const removeBtn = document.getElementsByClassName('btn-remove');
+  for (let i = 0; i < removeBtn.length; i++) {
+    removeBtn[i].addEventListener('click', removeProduct);
+  }
+
+  const createBtn = document.getElementById('create');
+  createBtn.addEventListener('click', createProduct);
 });
